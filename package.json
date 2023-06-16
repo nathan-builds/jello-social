@@ -1,21 +1,20 @@
 {
-  "name": "jello",
+  "name": "jello-social",
   "version": "1.0.0",
   "description": "",
-  "main": "app.ts",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc",
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
-  "author": "n.hans",
+  "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^4.15.0",
+    "bcrypt": "^5.1.0",
     "express": "^4.18.2",
-    "typescript": "^5.0.4"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.17",
-    "@types/node": "^18.16.3"
+    "jsonwebtoken": "^9.0.0",
+    "nodemon": "^2.0.22",
+    "prisma": "^4.15.0"
   }
 }
