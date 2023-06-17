@@ -34,6 +34,8 @@ exports.login = async (req, res, next) => {
     if (!isValidPassword) {
         return next(new AppError('Invalid Password Entered, please re-enter', 401))
     }
+    // now all downstream functions have the user on the request
+    req.user = user;
     sendToken(user, 200, res)
 
 }
@@ -69,7 +71,7 @@ const signToken = (id) => {
 };
 
 const sendToken = (userData, status, res) => {
-    const token = signToken(userData.username);
+    const token = signToken(userData);
 
     res.cookie('jwt', token, cookieOptions);
     res.status(status).json({
@@ -100,23 +102,30 @@ exports.protectRoute = async (req, res, next) => {
         token,
         TOKEN_SECRET
     );
-    c
+    console.log(verification);
+
     if (!verification) {
         return next(new AppError('Authorization needed for request, please login', 401))
     }
 
-    // // check if user still exists
-    // const currentUser = await User.findById(verification.id);
-    // if (!currentUser) {
-    //     return next(new AppError('User no longer exists', 401));
-    // }
+    //check if user still exists
+    const currentUser = await prisma.user.findUnique({
+        where: {
+            userName: verification.id.userName
+        }
+    })
+    if (!currentUser) {
+        return next(new AppError('User no longer exists', 401));
+    }
     //
     // //check if password changed since token issue date, pass jwt timestamp "iat" is issued at time
     // if (currentUser.passwordChanged(verification.iat)) {
     //     return next(new AppError('Password changed since token issued', 401));
     // }
     // // may be used later
-    // req.user = currentUser;
 
+
+    // now all downstream functions have the user on the request
+    req.user = currentUser;
     next();
 }

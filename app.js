@@ -5,30 +5,9 @@ const app = express();
 const PORT = 3000;
 const authRouter = require('./routes/authRouter')
 const feedRouter = require('./routes/feedRouter')
+const postRouter = require('./routes/postRotuer')
 
 const globalErrorHandler = require('./controllers/errorController');
-const prisma = new PrismaClient();
-
-
-// prisma.user.create({
-//     data: {
-//         name: 'Alice',
-//         email: 'newuser.io',
-//         posts: {
-//             create: {title: 'Hello World'},
-//         },
-//         profile: {
-//             create: {bio: 'I like turtles'},
-//         },
-//     },
-// }).then(user => {
-//     console.log(user)
-// })
-// console.log('CREATED USER')
-// prisma.user.findMany().then(res => {
-//     console.log(res);
-// });
-//test
 
 
 app.use(express.json({limit: '10kb'}));
@@ -50,6 +29,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRouter)
 app.use('/feed', feedRouter)
+app.use('/post', postRouter)
 
 app.use(globalErrorHandler);
 
