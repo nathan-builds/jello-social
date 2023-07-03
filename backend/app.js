@@ -1,16 +1,21 @@
 const express = require('express');
-const {PrismaClient} = require('@prisma/client')
+const { PrismaClient } = require('@prisma/client')
 
 const app = express();
-const PORT = 3000;
+const PORT = 5000;
+const morgan = require('morgan')
 const authRouter = require('./routes/authRouter')
 const feedRouter = require('./routes/feedRouter')
 const postRouter = require('./routes/postRotuer')
+const groupRouter = require('./routes/groupRouter')
 
 const globalErrorHandler = require('./controllers/errorController');
 
 
-app.use(express.json({limit: '10kb'}));
+app.use(morgan('dev'));
+// app.use('*', (req, res) => console.log( req.protocol + '://' + req.get('host') + req.originalUrl))
+app.use(express.json({ limit: '10kb' }));
+
 
 app.listen(PORT, (error) => {
         if (!error)
@@ -27,9 +32,11 @@ app.get('/', (req, res) => {
     })
 })
 
+
 app.use('/auth', authRouter)
 app.use('/feed', feedRouter)
 app.use('/post', postRouter)
+app.use('/group', groupRouter)
 
 app.use(globalErrorHandler);
 

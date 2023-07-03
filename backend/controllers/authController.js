@@ -15,6 +15,7 @@ const cookieOptions = {
 };
 
 exports.login = async (req, res, next) => {
+    console.log('IN LOGIN')
     const userName = req.body.username;
     const password = req.body.password;
 
